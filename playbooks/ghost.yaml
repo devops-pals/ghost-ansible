@@ -1,5 +1,7 @@
 ---
-- name: install ghost
+- hosts: ghost
+  become: true
   roles:
+    - common
     - nginx
     - ghost

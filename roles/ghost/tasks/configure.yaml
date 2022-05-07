@@ -1,0 +1,35 @@
+---
+- name: Copy ghost docker-compose file
+  ansible.builtin.template:
+    src: docker-compose.yaml.j2
+    dest: "{{ ghost_docker_dir }}/docker-compose.yaml"
+
+- name: Start ghost docker-compose
+  community.docker.docker_compose:
+    project_src: "{{ ghost_docker_dir }}"
+    files:
+      - docker-compose.yaml
+
+- name: Copy nginx site configuration
+  ansible.builtin.template:
+    src: ghost.site.j2
+    dest: /etc/nginx/sites-available/ghost
+  notify:
+    - Reload nginx
+
+- name: Check if cert is already generated
+  ansible.builtin.stat:
+    path: "/etc/letsencrypt/live/{{ ghost_server_url }}/fullchain.pem"
+  register: cert_exists
+
+- name: Generate cert for ghost endpoint
+  ansible.builtin.command: "certbot certonly --nginx --non-interactive --agree-tos -m {{ certbot_email }} -d {{ ghost_server_url }}"
+  when: not cert_exists.stat.exists
+  notify:
+    - Reload nginx
+
+- name: Symlink ghost nginx site configuration
+  ansible.builtin.file:
+    src: /etc/nginx/sites-available/ghost
+    dest: /etc/nginx/sites-enabled/ghost
+    state: link

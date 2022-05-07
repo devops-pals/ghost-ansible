@@ -1,10 +1,10 @@
 ---
-- name: Install nginx
+- name: Install common
   import_tasks: install.yaml
   tags:
-    - nginx
+    - common
 
-- name: Configure nginx
+- name: Configure common
   import_tasks: configure.yaml
   tags:
-    - nginx
+    - common

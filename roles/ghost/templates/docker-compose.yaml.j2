@@ -1,0 +1,35 @@
+version: "3.9"
+services:
+  ghost:
+    image: ghost:4-alpine
+    restart: unless-stopped
+    networks:
+      - ghost-network
+    volumes:
+      - ghost-app:/var/lib/ghost
+    ports:
+      - 127.0.0.1:{{ ghost_port }}:2368
+    environment:
+      database__client: mysql
+      database__connection__host: db
+      database__connection__user: root
+      database__connection__password: {{ ghost_db_root_password }}
+      database__connection__database: ghost
+      url: https://{{ ghost_server_url }}
+
+  db:
+    image: mariadb
+    restart: unless-stopped
+    networks:
+      - ghost-network
+    volumes:
+      - ghost-db:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: {{ ghost_db_root_password }}
+
+volumes:
+  ghost-app:
+  ghost-db:
+
+networks:
+  ghost-network:

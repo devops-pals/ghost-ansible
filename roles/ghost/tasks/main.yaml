@@ -1,10 +1,10 @@
 ---
-- name: Install nginx
+- name: Install ghost
   import_tasks: install.yaml
   tags:
-    - nginx
+    - ghost
 
-- name: Configure nginx
+- name: Configure ghost
   import_tasks: configure.yaml
   tags:
-    - nginx
+    - ghost
