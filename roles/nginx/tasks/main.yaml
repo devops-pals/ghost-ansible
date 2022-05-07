@@ -1,0 +1,6 @@
+---
+- name: Install nginx
+  import_tasks: install.yaml
+
+- name: Configure nginx
+  import_tasks: configure.yaml

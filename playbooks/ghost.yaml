@@ -1,0 +1,5 @@
+---
+- name: install ghost
+  roles:
+    - nginx
+    - ghost
