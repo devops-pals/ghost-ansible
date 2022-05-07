@@ -1,0 +1,9 @@
+---
+ghost_docker_dir: /opt/ghost-docker
+ghost_port: 9090
+ghost_db_root_password: willywonkathebootyhonka
+
+ghost_server_url: "localhost"
+ghost_use_tls: false
+
+certbot_email: ""

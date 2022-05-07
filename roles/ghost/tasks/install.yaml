@@ -1,0 +1,6 @@
+---
+- name: Create ghost directory
+  ansible.builtin.file:
+    path: "{{ ghost_docker_dir }}"
+    state: directory
+    mode: '0755'

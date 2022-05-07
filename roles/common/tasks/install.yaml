@@ -1,0 +1,52 @@
+---
+- name: Update package cache
+  ansible.builtin.apt:
+    update_cache: yes
+
+- name: Install common packages
+  ansible.builtin.apt:
+    name: "{{ item }}"
+    state: present
+  loop:
+    - ca-certificates
+    - curl
+    - gnupg
+    - lsb-release
+    - python3-pip
+    - ufw
+    - snapd
+
+- name: Add docker GPG key
+  ansible.builtin.apt_key:
+    url: "{{ docker_gpg_key }}"
+    state: present
+
+- name: Get ubuntu release
+  ansible.builtin.shell: lsb_release -cs
+  register: lsb_release
+
+- name: Add docker repository
+  ansible.builtin.apt_repository:
+    repo: "deb {{ docker_repository }} {{ lsb_release.stdout }} stable"
+    state: present
+
+- name: Update package cache
+  ansible.builtin.apt:
+    update_cache: yes
+
+- name: Install docker
+  ansible.builtin.apt:
+    name: "{{ item }}"
+    state: present
+  loop:
+    - docker-ce
+    - docker-ce-cli
+    - containerd.io
+    - docker-compose-plugin
+
+- name: Install docker pip modules
+  ansible.builtin.pip:
+    name: "{{ item }}"
+  loop:
+    - docker
+    - docker-compose

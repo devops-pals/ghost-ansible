@@ -1,0 +1,7 @@
+---
+- hosts: ghost
+  become: true
+  roles:
+    - common
+    - nginx
+    - ghost

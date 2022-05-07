@@ -1,0 +1,22 @@
+---
+- name: Update package cache
+  ansible.builtin.apt:
+    update_cache: yes
+
+- name: Install apt packages
+  ansible.builtin.apt:
+    name: "{{ item }}"
+    state: present
+  loop:
+    - nginx
+
+- name: Install certbot
+  community.general.snap:
+    name: certbot
+    classic: yes
+
+- name: Link certbot binary
+  ansible.builtin.file:
+    src: /snap/bin/certbot
+    dest: /usr/bin/certbot
+    state: link

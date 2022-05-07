@@ -1,0 +1,10 @@
+---
+- name: Install common
+  import_tasks: install.yaml
+  tags:
+    - common
+
+- name: Configure common
+  import_tasks: configure.yaml
+  tags:
+    - common

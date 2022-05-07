@@ -1,0 +1,10 @@
+---
+- name: Install ghost
+  import_tasks: install.yaml
+  tags:
+    - ghost
+
+- name: Configure ghost
+  import_tasks: configure.yaml
+  tags:
+    - ghost
