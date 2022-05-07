@@ -10,21 +10,22 @@
     files:
       - docker-compose.yaml
 
-- name: Copy nginx site configuration
-  ansible.builtin.template:
-    src: ghost.site.j2
-    dest: /etc/nginx/sites-available/ghost
-  notify:
-    - Reload nginx
-
 - name: Check if cert is already generated
   ansible.builtin.stat:
     path: "/etc/letsencrypt/live/{{ ghost_server_url }}/fullchain.pem"
   register: cert_exists
+  when: ghost_use_tls
 
 - name: Generate cert for ghost endpoint
   ansible.builtin.command: "certbot certonly --nginx --non-interactive --agree-tos -m {{ certbot_email }} -d {{ ghost_server_url }}"
-  when: not cert_exists.stat.exists
+  notify:
+    - Reload nginx
+  when: ghost_use_tls and not cert_exists.stat.exists
+
+- name: Copy nginx site configuration
+  ansible.builtin.template:
+    src: ghost.site.j2
+    dest: /etc/nginx/sites-available/ghost
   notify:
     - Reload nginx
 

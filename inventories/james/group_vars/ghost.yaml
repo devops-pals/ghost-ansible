@@ -1,3 +1,4 @@
 ---
 ghost_server_url: ghost.jameslowther.com
-certbot_email: jamesevlowther@gmail.com
+ghost_use_tls: true
+certbot_email: "jamesevlowther@gmail.com"

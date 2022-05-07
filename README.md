@@ -23,14 +23,21 @@ inventories
 ```
 
 ```yaml
-# ghost.yaml
+# ghost.yaml - TLS
 
 ghost_server_url: ghost.foobar.com          # domain we're using for ghost
-certbot_email: foo@bar.com                  # email certbot requires
+ghost_use_tls: true                         # enable cert generation
+certbot_email: foo@bar.com                  # email required by certbot
+```
+
+```yaml
+# ghost.yaml - no TLS
+
+ghost_server_url: ghost.foobar.com          # domain we're using for ghost (localhost for no domain)
 ```
 
 ## Run the playbook
-**Note: Configure your DNS before running the playbook to make sure LetEncrypt can validate your certificate with an HTTP challenge.**
+**Note: If using TLS, first configure your DNS before running the playbook to make sure LetEncrypt can validate your certificate with an HTTP challenge.**
 
 You can use the `run-playbook.sh` script to run the playbook on your instance:
 ```

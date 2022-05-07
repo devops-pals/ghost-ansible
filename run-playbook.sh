@@ -3,14 +3,13 @@
 OLD_PWD=$(pwd)
 cd $(dirname $0)
 
-USER=${2:-root}
-
 if ! command -v ansible-playbook &> /dev/null; then
-    echo "You must first install ansible before running this command"
-    echo "Make sure 'ansible-playbook' exists in your PATH"
-    exit
+    echo "You must first install ansible before running this command."
+    echo "Make sure 'ansible-playbook' exists in your PATH."
+    exit 1
 fi
 
+USER=${2:-root}
 INVENTORY=""
 
 if [ -z "$1" ]; then
@@ -22,9 +21,10 @@ fi
 
 echo
 echo "==============================================================================="
-echo "The playbook assumes that the DNS entry for your domain points to the instance."
+echo "If using TLS, ensure the DNS entry for your domain points to your host."
 echo "This is important to ensure the LetEncrypt certificate is generated correctly."
-echo "==============================================================================="; echo
+echo "==============================================================================="
+echo
 
 echo "     User: $USER"
 echo "Inventory: inventories/$INVENTORY"
@@ -33,7 +33,7 @@ echo
 read -p "Do you want to proceed? (y/N): " -r
 if [[ ! $REPLY =~ ^[Yy]$ ]]; then
     echo "Goodbye."
-    exit
+    exit 0
 fi
 
 if [ "$USER" == "root" ]; then
@@ -41,5 +41,7 @@ if [ "$USER" == "root" ]; then
 else
     ansible-playbook -i inventories/$INVENTORY -u $USER playbooks/ghost.yaml --ask-become-pass
 fi
+
+echo "Done."
 
 cd $OLD_PWD

@@ -15,7 +15,11 @@ services:
       database__connection__user: root
       database__connection__password: {{ ghost_db_root_password }}
       database__connection__database: ghost
+{% if ghost_use_tls %}
       url: https://{{ ghost_server_url }}
+{% else %}
+      url: http://{{ ghost_server_url }}
+{% endif %}
 
   db:
     image: mariadb
