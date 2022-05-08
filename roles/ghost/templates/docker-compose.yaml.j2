@@ -6,7 +6,7 @@ services:
     networks:
       - ghost-network
     volumes:
-      - ghost-app:/var/lib/ghost
+      - ghost-app:/var/lib/ghost/content
     ports:
       - 127.0.0.1:{{ ghost_port }}:2368
     environment:
