@@ -56,4 +56,4 @@ ansible-playbook -i inventories/foobar -u ubuntu playbooks/ghost.yaml --ask-beco
 
 If all works correctly, you should now be able to access your ghost instance from the domain you put in `group_vars/ghost.yaml`.
 
-In the example, go would go to https://ghost.foobar.com/ghost to configure your administrative user.
+In the example, you would go to https://ghost.foobar.com/ghost to configure your administrative user.
